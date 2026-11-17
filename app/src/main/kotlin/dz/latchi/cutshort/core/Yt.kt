@@ -7,7 +7,6 @@ import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.downloader.Downloader
 import org.schabi.newpipe.extractor.downloader.Request
 import org.schabi.newpipe.extractor.downloader.Response
-import org.schabi.newpipe.extractor.media.MediaFormat
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import java.util.concurrent.TimeUnit
 
@@ -41,10 +40,10 @@ object Yt {
         val svc = NewPipe.getService("YouTube")
         val info = StreamInfo.getInfo(svc, link)
         val progressive = info.videoStreams.filter { !it.isVideoOnly }
-        val v = progressive.firstOrNull { it.mediaFormat == MediaFormat.MPEG_4 }
+        val v = progressive.firstOrNull { it.mediaFormat?.suffix == "mp4" }
             ?: progressive.firstOrNull()
             ?: throw IllegalStateException("ما لقيتنش صيغة MP4 مباشرة لهذا الفيديو")
-        return Info(info.name ?: "فيديو", info.length, v.content)
+        return Info(info.name ?: "فيديو", info.duration, v.content)
     }
 
     fun normalize(url: String): String? {

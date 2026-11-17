@@ -94,10 +94,12 @@ class CutViewModel(app: Application) : AndroidViewModel(app) {
             val total = r.body?.contentLength() ?: -1L
             r.body?.byteStream()?.use { inp ->
                 src.outputStream().use { out ->
-                    val buf = ByteArray(1 << 16); var done = 0L; var n: Int
-                    while (inp.read(buf).also { n = it } != -1) {
+                    val buf = ByteArray(1 << 16); var done = 0L
+                    var n = inp.read(buf)
+                    while (n != -1) {
                         out.write(buf, 0, n); done += n
                         if (total > 0) setJob(idx, JobState(info.title, "تحميل الفيديو الأصلي…", (done * 80 / total).toInt().coerceAtMost(80)))
+                        n = inp.read(buf)
                     }
                 }
             } ?: throw Exception("جسم التحميل فارغ")
