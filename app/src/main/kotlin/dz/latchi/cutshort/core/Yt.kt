@@ -38,7 +38,14 @@ object Yt {
 
     fun extract(link: String): Info {
         val svc = NewPipe.getService("YouTube")
-        val info = StreamInfo.getInfo(svc, link)
+        // v1.2.0: retry once — YouTube playability errors (UNPLAYABLE /
+        // "page needs to be reloaded") are often transient per client.
+        val info = try {
+            StreamInfo.getInfo(svc, link)
+        } catch (e: Exception) {
+            try { Thread.sleep(1200) } catch (_: InterruptedException) {}
+            StreamInfo.getInfo(svc, link)
+        }
         val progressive = info.videoStreams.filter { !it.isVideoOnly }
         val v = progressive.firstOrNull { it.format?.suffix == "mp4" }
             ?: progressive.firstOrNull()
