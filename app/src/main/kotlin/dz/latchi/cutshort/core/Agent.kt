@@ -99,8 +99,9 @@ object Agent {
     /// ⚡ وكيل محلي فوري بلا إنترنت (احتياطي الذكاء)
     fun local(text: String, creditsOut: Boolean): AgentMsg {
         val url = Yt.normalize(text)
-        val every = Regex("(?:كل|طول)\\s*([0-9٠-٩]+)\\s*(?:ثانية|ث)").find(text)
-            ?.groupValues?.get(1)?.map { if (it in '٠'..'٩') (it - '0' + '0') else it }?.toIntOrNull()
+        val every = Regex("(?:كل|طول)\\s*([0-9٠-٩]+)\\s*(?:ثانية|ث)").find(text)?.let { m ->
+            m.groupValues[1].map { if (it in '٠'..'٩') ('0' + (it - '٠')) else it }.joinToString("").toIntOrNull()
+        }
         return when {
             url != null && every != null -> AgentMsg(false, "وصلني الرابط 🎬 الخطة: مقطع كل $every ثانية${if (creditsOut) note() else ""} — نفّذ من شاشة القص (وضع زمني).")
             url != null -> AgentMsg(false, "وصلني الرابط 🎬${if (creditsOut) note() else ""} اختر في شاشة القص: 🤖 ذكاء / 👁 مشاهد / ⏱ زمني (15/30/45/60/90 ثانية) والاتجاه عمودي أو أفقي.")

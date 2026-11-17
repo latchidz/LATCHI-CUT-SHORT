@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import androidx.media3.common.MediaItem
 import androidx.media3.effect.Crop
-import androidx.media3.effect.Effects
+import androidx.media3.common.Effects
 import androidx.media3.effect.Presentation
 import androidx.media3.transformer.Composition
 import androidx.media3.transformer.EditedMediaItem
@@ -100,7 +100,6 @@ object Engine {
         transformer.start(item, out)
         val ph = ProgressHolder()
         while (!done.isCompleted) { transformer.getProgress(ph); delay(250) }
-        transformer.release()
         return done.await()
     }
 

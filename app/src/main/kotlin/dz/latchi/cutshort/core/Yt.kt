@@ -22,7 +22,7 @@ class OkDownloader : Downloader() {
         request.headers().forEach { (k, vals) -> vals.forEach { rb.addHeader(k, it) } }
         rb.method(request.httpMethod(), body)
         client.newCall(rb.build()).execute().use { r ->
-            return Response(r.body?.string() ?: "", r.code, r.message, r.headers.toMultimap(), r.request.url.toString())
+            return Response(r.code, r.message, r.headers.toMultimap(), r.body?.string() ?: "", r.request.url.toString())
         }
     }
 }

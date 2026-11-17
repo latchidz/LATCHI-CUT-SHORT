@@ -120,7 +120,7 @@ fun CutScreen(
         }
         item {
             Button(
-                onClick = { vm.start(url, mode, segSec, orient, if (mode == Mode.AI) plan else null) },
+                onClick = { val p = plan; vm.start(url, mode, segSec, orient, if (mode == Mode.AI) p else null) },
                 enabled = !busy && url.isNotBlank(),
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Navy),
@@ -128,7 +128,7 @@ fun CutScreen(
             ) {
                 Text(
                     when (mode) {
-                        Mode.AI -> if (plan != null) "🤖 نفّذ خطة الذكاء (${plan.size} مقاطع)" else "🤖 قص بالذكاء الاصطناعي"
+                        Mode.AI -> if (plan != null) "🤖 نفّذ خطة الذكاء (${plan!!.size} مقاطع)" else "🤖 قص بالذكاء الاصطناعي"
                         Mode.SCENE -> "👁 قص بكشف المشاهد"
                         Mode.TIME -> "⏱ قص كل ${segSec} ثانية"
                     },
