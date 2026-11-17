@@ -31,7 +31,7 @@ object Yt {
     @Volatile private var inited = false
     fun init(ctx: android.content.Context) {
         if (inited) return
-        synchronized(this) { if (!inited) { NewPipe.init(ctx, OkDownloader()); inited = true } }
+        synchronized(this) { if (!inited) { NewPipe.init(OkDownloader()); inited = true } }
     }
 
     data class Info(val title: String, val durationSec: Int, val streamUrl: String)
@@ -40,10 +40,10 @@ object Yt {
         val svc = NewPipe.getService("YouTube")
         val info = StreamInfo.getInfo(svc, link)
         val progressive = info.videoStreams.filter { !it.isVideoOnly }
-        val v = progressive.firstOrNull { it.mediaFormat?.suffix == "mp4" }
+        val v = progressive.firstOrNull { it.format?.suffix == "mp4" }
             ?: progressive.firstOrNull()
             ?: throw IllegalStateException("ما لقيتنش صيغة MP4 مباشرة لهذا الفيديو")
-        return Info(info.name ?: "فيديو", info.duration, v.content)
+        return Info(info.name ?: "فيديو", info.duration.toInt(), v.content)
     }
 
     fun normalize(url: String): String? {

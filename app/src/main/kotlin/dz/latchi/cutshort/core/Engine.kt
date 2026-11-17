@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import androidx.media3.common.MediaItem
 import androidx.media3.effect.Crop
-import androidx.media3.common.Effects
+import androidx.media3.transformer.Effects
 import androidx.media3.effect.Presentation
 import androidx.media3.transformer.Composition
 import androidx.media3.transformer.EditedMediaItem
@@ -86,7 +86,7 @@ object Engine {
             .setStartPositionMs(startMs).setEndPositionMs(endMs).build()
         val (cl, cr, cb, ct) = centerCropWindow(w, h, orientation)
         val targetHeight = if (orientation == Orientation.VERTICAL) 1920 else 1080
-        val effects = Effects(listOf(Crop(cl, cr, cb, ct), Presentation.createForHeight(targetHeight)))
+        val effects = Effects(emptyList(), listOf(Crop(cl, cr, cb, ct), Presentation.createForHeight(targetHeight)))
         val item = EditedMediaItem.Builder(
             MediaItem.Builder().setUri(src).setClippingConfiguration(clip).build()
         ).setEffects(effects).build()
