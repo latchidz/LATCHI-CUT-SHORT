@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Cut" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">#F2C14E</item>
+        <item name="android:colorAccent">#3E7BD6</item>
+        <item name="android:windowBackground">#0A0E1E</item>
+        <item name="android:statusBarColor">#0A0E1E</item>
+        <item name="android:navigationBarColor">#0A0E1E</item>
+    </style>
+</resources>

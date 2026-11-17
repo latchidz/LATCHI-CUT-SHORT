@@ -1,0 +1,19 @@
+workflows:
+  cut-release:
+    name: LATCHI CUT SHORT
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      java: 17
+    scripts:
+      - name: Make Gradle executable
+        script: chmod +x gradlew
+      - name: Build Release APK
+        script: |
+          set -o pipefail
+          ./gradlew assembleRelease --stacktrace 2>&1 | tee build_log.txt
+      - name: Verify APK
+        script: ls -lh app/build/outputs/apk/release/
+    artifacts:
+      - app/build/outputs/apk/release/*.apk
+      - build_log.txt
