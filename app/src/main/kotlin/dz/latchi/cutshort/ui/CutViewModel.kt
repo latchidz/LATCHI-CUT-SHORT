@@ -94,7 +94,8 @@ class CutViewModel(app: Application) : AndroidViewModel(app) {
             val total = r.body?.contentLength() ?: -1L
             r.body?.byteStream()?.use { inp ->
                 src.outputStream().use { out ->
-                    val buf = ByteArray(1 << 16); var done = 0L
+                    val buf = ByteArray(65536)
+                    var done = 0L
                     var n = inp.read(buf)
                     while (n != -1) {
                         out.write(buf, 0, n); done += n
